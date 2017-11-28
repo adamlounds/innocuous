@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/firstrow/tcp_server"
+  packages = ["."]
+  revision = "3c550f1587f05cb2e740396738f2723dbb0ee7b1"
+
+[[projects]]
   name = "github.com/go-chi/chi"
   packages = [".","middleware"]
   revision = "687d2792aedd8e8ac3bbd8592cf55b91d7ea8ce9"
@@ -64,6 +70,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "a75e20f989119c878d864534cd9ec16809d3899d27c1325bbe57100a898776b3"
+  inputs-digest = "fff478aa0854915b8ff99ffc26522b8010da827dcdb09195b28f6b67e2b58eb0"
   solver-name = "gps-cdcl"
   solver-version = 1
