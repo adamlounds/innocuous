@@ -35,9 +35,6 @@ func main() {
 
 }
 
-func wtf() {
-}
-
 func startHTTPServer(HTTPPort string) {
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
