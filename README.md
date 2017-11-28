@@ -21,5 +21,6 @@ Next steps:
   * first pass at generating the top-n list. Sort over all words/letters would
     normally be simplest, but sorting in go is... funky, and it seems a bit
     wasteful
+  * write tests - was waiting for list generation before writing http tests
   * look at optimising - don't need to sort, just look at the current top-n
     list and update it.
