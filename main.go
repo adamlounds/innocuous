@@ -10,15 +10,14 @@ import (
 	"github.com/sirupsen/logrus"
 	"golang.org/x/net/context"
 	"net/http"
-	"strconv"
 	"strings"
 )
 
 type statistics struct {
-	numLinesReceived int      `json:"numLines"`
-	numWordsReceived int      `json:"count"`
-	top5Words        []string `json:"top_5_words"`
-	top5Letters      []string `json:"top_5_letters"`
+	NumLinesReceived int      `json:"numLines"`
+	NumWordsReceived int      `json:"count"`
+	Top5Words        []string `json:"top_5_words"`
+	Top5Letters      []string `json:"top_5_letters"`
 }
 
 const (
@@ -93,10 +92,10 @@ func startTelnetServer(TelnetPort string) chan []string {
 		c.Send(fmt.Sprintf("Hello. You are connection %d\n", numActiveSessions))
 	})
 	server.OnNewMessage(func(c *tcp_server.Client, message string) {
-		stats.numLinesReceived++
+		stats.NumLinesReceived++
 
 		words := strings.Fields(message)
-		stats.numWordsReceived += len(words)
+		stats.NumWordsReceived += len(words)
 		c.Send(fmt.Sprintf("Received %d words\n", len(words)))
 
 		wordsChan <- []string{"two", "three"}
@@ -117,19 +116,12 @@ func startHTTPServer(HTTPPort string) {
 	r.Use(middleware.RequestID)
 	r.Use(middleware.Logger)
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("hello world"))
-		w.Write([]byte("connections: " + strconv.Itoa(numConnections) + "<br>"))
-		w.Write([]byte("lines received: " + strconv.Itoa(stats.numLinesReceived) + "<br>"))
-		w.Write([]byte("words received: " + strconv.Itoa(stats.numWordsReceived) + "<br>"))
-
-		// aaagh, json eludes me once more
+		w.Header().Set("Content-Type", "application/json")
 		json, err := json.Marshal(stats)
 		if err != nil {
 			lg.Log(serverCtx).Errorf("cannot marshal %s", err)
 		}
-		lg.Log(serverCtx).Infof("json %s", string(json))
-		lg.Log(serverCtx).Infof("stats %+v", stats)
-
+		w.Write(json)
 	})
 
 	go func() {
