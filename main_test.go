@@ -37,8 +37,10 @@ func TestTelnetServer(t *testing.T) {
 	serverCtx = lg.WithLoggerContext(serverCtx, logger)
 	lg.Log(serverCtx).Infof("Starting Innocuous server %s", "v1.0")
 
+	var wordsChan chan []string
+
 	Convey("Innocuous telnet server can be started", t, func() {
-		So(func() { startTelnetServer(":9099") }, ShouldNotPanic)
+		So(func() { wordsChan = startTelnetServer(":9099") }, ShouldNotPanic)
 	})
 
 	// wait for server to wake up
