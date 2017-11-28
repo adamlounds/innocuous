@@ -14,3 +14,12 @@ before replying to the client.  The worker channel then reduces the full array
 into a map of word vs count and "letter" (unicode combining characters etc
 notwithstanding) vs count, which it can then pass to other channels which are
 the only ones allowed to update the global maps.
+
+Next steps:
+  * ask someone for help with channels
+  * implement the multi-channel updater
+  * first pass at generating the top-n list. Sort over all words/letters would
+    normally be simplest, but sorting in go is... funky, and it seems a bit
+    wasteful
+  * look at optimising - don't need to sort, just look at the current top-n
+    list and update it.
