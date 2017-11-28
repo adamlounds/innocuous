@@ -60,14 +60,14 @@ func main() {
 			word := words[i]
 			allWords[word]++
 			wordCount := allWords[word]
-			lg.Log(serverCtx).Infof("seen %s %d times", word, wordCount)
+			lg.Log(serverCtx).Debugf("seen %s %d times", word, wordCount)
 
 			letters := strings.Split(word, "")
 			for j := 0; j < len(letters); j++ {
 				letter := letters[j]
 				allLetters[letter]++
 				letterCount := allLetters[letter]
-				lg.Log(serverCtx).Infof("seen %s %d times", letter, letterCount)
+				lg.Log(serverCtx).Debugf("seen %s %d times", letter, letterCount)
 			}
 
 			// if count is greater than current minimum-number-to-qualify,
