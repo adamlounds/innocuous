@@ -1,3 +1,5 @@
+# https://github.com/vincentbernat/hellogopher
+
 PACKAGE  = innocuous
 DATE    ?= $(shell date +%FT%T%z)
 VERSION ?= $(shell git describe --tags --always --dirty --match=v* 2> /dev/null || \
