@@ -63,5 +63,13 @@ func TestTelnetServer(t *testing.T) {
 	})
 
 	conn.Write([]byte("Test message\n"))
+	Convey("..and it tells us how many words we gave it", t, func() {
+		reply := make([]byte, 1024)
+		_, err = conn.Read(reply)
+
+		reply = bytes.Trim(reply, "\x00")
+		So(err, ShouldEqual, nil)
+		So(string(reply), ShouldEqual, "Received 2 words\n")
+	})
 
 }

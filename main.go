@@ -10,6 +10,7 @@ import (
 	"golang.org/x/net/context"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -21,6 +22,7 @@ var count = 0
 var numActiveSessions = 0
 var numConnections = 0
 var numLinesReceived = 0
+var numWordsReceived = 0
 var top5Words = [5]string{"lorem", "ipsum", "dolor", "sit", "amet"}
 var top5Letters = [5]string{"e", "t", "a", "o", "i"}
 var serverCtx context.Context
@@ -49,6 +51,11 @@ func startTelnetServer(TelnetPort string) {
 	})
 	server.OnNewMessage(func(c *tcp_server.Client, message string) {
 		numLinesReceived++
+
+		words := strings.Fields(message)
+		numWordsReceived += len(words)
+		c.Send(fmt.Sprintf("Received %d words\n", len(words)))
+
 	})
 	server.OnClientConnectionClosed(func(c *tcp_server.Client, err error) {
 		numActiveSessions--
@@ -64,8 +71,9 @@ func startHTTPServer(HTTPPort string) {
 	r.Use(middleware.Logger)
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("hello world"))
-		w.Write([]byte(strconv.Itoa(numConnections)))
-		w.Write([]byte(strconv.Itoa(numLinesReceived)))
+		w.Write([]byte("connections: " + strconv.Itoa(numConnections) + "<br>"))
+		w.Write([]byte("lines received: " + strconv.Itoa(numLinesReceived) + "<br>"))
+		w.Write([]byte("words received: " + strconv.Itoa(numWordsReceived) + "<br>"))
 	})
 
 	go func() {
